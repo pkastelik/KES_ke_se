@@ -66,10 +66,11 @@ private:
 
 
 struct TeamStats {
-	void addScore(int scored, int conceded)
+	void addScore(int opponentId, int scored, int conceded)
 	{
 		this->scored += scored;
 		this->conceded += conceded;
+		this->scoreMap[opponentId] = scored - conceded;
 
 		if (scored > conceded)
 			points += 3;
@@ -82,6 +83,7 @@ struct TeamStats {
 	int points = 0;
 	int scored = 0;
 	int conceded = 0;
+	int scoreMap[TEAMS_PER_GROUP] = { 0 };
 };
 
 
@@ -92,10 +94,8 @@ public:
 		int id1 = getTeamId(score.team1);
 		int id2 = getTeamId(score.team2);
 
-		m_teams[id1].addScore(score.team1Score, score.team2Score);
-		m_teams[id2].addScore(score.team2Score, score.team1Score);
-		m_scoreMap[id1][id2] = score.team1Score - score.team2Score;
-		m_scoreMap[id2][id1] = score.team2Score - score.team1Score;
+		m_teams[id1].addScore(id2, score.team1Score, score.team2Score);
+		m_teams[id2].addScore(id1, score.team2Score, score.team1Score);
 		m_sorted = false;
 	}
 
@@ -113,7 +113,7 @@ public:
 						std::sort(
 							m_teams.begin() + j,
 							m_teams.begin() + (j + toSort),
-							[this, toSort](const TeamStats& a, const TeamStats& b) { return compareTeamStats(a, b, toSort == 2) > 0; });
+							[toSort](const TeamStats& a, const TeamStats& b) { return compareTeamStats(a, b, toSort == 2) > 0; });
 					}
 
 					j = i;
@@ -122,11 +122,11 @@ public:
 
 			m_sorted = true;
 
-			std::cout << std::endl;
-			for (auto& t : m_teams) {
-				std::cout << t.name << ' ' << t.points << ' ' << t.scored - t.conceded << ' ' << t.scored << ' ' << t.conceded << std::endl;
-			}
-			std::cout << std::endl;
+			//std::cout << std::endl;
+			//for (auto& t : m_teams) {
+			//	std::cout << t.name << ' ' << t.points << ' ' << t.scored - t.conceded << ' ' << t.scored << ' ' << t.conceded << std::endl;
+			//}
+			//std::cout << std::endl;
 		}
 
 		return std::make_pair(m_teams[0].name, m_teams[1].name);
@@ -148,12 +148,12 @@ private:
 		return t.id;
 	}
 
-	int compareTeamStats(const TeamStats& a, const TeamStats& b, bool compareDirect)
+	static int compareTeamStats(const TeamStats& a, const TeamStats& b, bool compareDirect)
 	{
 		int ret = 0;
 
 		if (compareDirect) {
-			ret = m_scoreMap[a.id][b.id];
+			ret = a.scoreMap[b.id];
 			if (ret != 0)
 				return ret;
 		}
@@ -170,7 +170,6 @@ private:
 	}
 
 	std::vector<TeamStats> m_teams;
-	int m_scoreMap[TEAMS_PER_GROUP][TEAMS_PER_GROUP] = { 0 };
 	bool m_sorted = true;
 };
 
