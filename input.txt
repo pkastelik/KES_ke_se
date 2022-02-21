@@ -1,0 +1,25 @@
+1
+Polska 3 : 1 Grecja
+Rosja 1 : 2 Czechy
+Holandia 2 : 3 Dania
+Niemcy 3 : 1 Portugalia
+Hiszpania 3 : 1 Wlochy
+Irlandia 2 : 2 Chorwacja
+Ukraina 1 : 1 Szwecja
+Francja 1 : 1 Anglia
+Grecja 2 : 0 Czechy
+Polska 2 : 2 Rosja
+Holandia 3 : 0 Niemcy
+Dania 1 : 0 Portugalia
+Hiszpania 3 : 1 Irlandia
+Wlochy 1 : 0 Chorwacja
+Szwecja 1 : 1 Anglia
+Ukraina 1 : 1 Francja
+Grecja 0 : 2 Rosja
+Czechy 1 : 4 Polska
+Portugalia 0 : 1 Holandia
+Dania 1 : 3 Niemcy
+Chorwacja 2 : 1 Hiszpania
+Wlochy 0 : 0 Irlandia
+Szwecja 1 : 1 Francja
+Anglia 1 : 1 Ukraina
